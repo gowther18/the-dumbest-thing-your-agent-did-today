@@ -36,6 +36,10 @@ def main() -> None:
     out = Path("/output/entry.txt")
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(TEXT, encoding="utf-8")
+    # Read the file back: the entry is only valid if what landed on disk
+    # is byte-for-byte the line the gate will judge.
+    if out.read_text(encoding="utf-8") != TEXT:
+        raise SystemExit("entry.txt on disk does not match TEXT")
     print(f"wrote {len(TEXT)} characters to {out}")
 
 
